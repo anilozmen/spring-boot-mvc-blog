@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<ul
+    class="pagination d-flex justify-content-end mb-4"
+    th:fragment="pagination (route, currentPage, lastPage)"
+>
+
+  <li class="page-item" th:if="${currentPage - 3 > 1}">
+    <a class="page-link" th:href="@{${route}(page=1)}" tabindex="-1">
+      <i class="fa fa-angle-double-left"></i>
+    </a>
+  </li>
+
+  <li class="page-item" th:if="${currentPage - 3 > 1}">
+    <a
+        class="page-link"
+        th:href="@{${route}(page=${currentPage - 1})}"
+        tabindex="-1"
+    >
+      <i class="fa fa-angle-left"></i>
+    </a>
+  </li>
+
+  <li
+      class="page-item"
+      th:if="${((currentPage - 3 > 0) ? currentPage - 3 : 1) != currentPage}"
+      th:each="left: ${#numbers.sequence( ( currentPage - 3 > 0 ? currentPage - 3 : 1) , currentPage - 1)}"
+  >
+    <a class="page-link" th:href="@{${route}(page=${left})}" th:text="${left}"></a>
+  </li>
+
+  <li class="page-item disabled" th:if="${lastPage > 1}">
+    <a class="page-link active" th:text="${currentPage}"></a>
+  </li>
+
+  <li
+      class="page-item"
+      th:if="${currentPage < lastPage}"
+      th:each="right : ${#numbers.sequence(currentPage + 1, (currentPage + 3 < lastPage ? currentPage + 3 : lastPage))}"
+  >
+    <a class="page-link" th:href="@{${route}(page=${right})}" th:text="${right}"></a>
+  </li>
+
+  <li class="page-item" th:if="${(currentPage + 3) < lastPage}">
+    <a class="page-link" th:href="@{${route}(page=${currentPage + 1})}">
+      <i class="fa fa-angle-right"></i>
+    </a>
+  </li>
+
+  <li class="page-item" th:if="${(lastPage - currentPage) > 3}">
+    <a class="page-link" th:href="@{${route}(page=${lastPage})}">
+      <i class="fa fa-angle-double-right"></i>
+    </a>
+  </li>
+
+</ul>
+</body>
+</html>

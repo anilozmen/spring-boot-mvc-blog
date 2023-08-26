@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+
+<body>
+<div class="container px-4 px-lg-5" th:fragment="comment (comments, postId)">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-10">
+      <div class="d-flex flex-row mt-4 mb-4">
+        <form
+            th:action="@{/user/posts/{postId}/comments(postId=${postId})}"
+            th:method="post"
+            th:object="${commentRequest}"
+            id="commentForm"
+        >
+          <div class="row align-items-center w-100">
+            <div class="col-10">
+              <input
+                  type="text"
+                  class="form-control mr-3"
+                  placeholder="Add comment"
+                  th:field="*{comment}"
+                  th:classappend="${#fields.hasErrors('comment')} ? 'is-invalid' : ''"
+                  required
+              />
+              <span
+                  class="invalid-feedback"
+                  th:if="${#fields.hasErrors('comment')}"
+                  th:errors="*{comment}"
+              >
+                Invalid Data
+              </span>
+            </div>
+            <div class="col-2 mb-auto">
+              <button class="btn btn-primary" type="submit">Comment</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-10">
+      <div class="mt-4 shadow p-3 mb-5 bg-white rounded" th:each="comment : ${comments}">
+        <div class="d-flex flex-row align-items-center">
+          <h5 class="me-2" th:text="|${comment.user.firstName} ${comment.user.lastName}|"></h5>
+          <span
+              class="mb-1 ms-2"
+              th:text="${comment?.formattedDate}"
+          ></span>
+
+          <form
+              class="ms-auto"
+              sec:authorize="isAuthenticated()"
+              th:if="${#authentication.principal.id == comment.user.id || #authorization.expression('hasRole(''ADMIN'')')}"
+              th:method="delete"
+              th:action="@{/user/posts/{postId}/comments/{commentId}(postId=${postId}, commentId=${comment.id})}"
+          >
+            <button id="removeButton" type="submit" class="btn btn-sm btn-danger">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </form>
+        </div>
+        <div class="text-start">
+          <span th:text="${comment.comment}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

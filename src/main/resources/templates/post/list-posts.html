@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+  <title>My Posts</title>
+</head>
+<body>
+
+<div class="container px-4 px-lg-5" layout:fragment="content">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+
+      <a th:href="@{/user/posts/create}" class="btn btn-sm btn-success float-end">
+        <i class="fa fa-plus"> </i> Create
+      </a>
+
+      <table class="table table-responsive table-hover">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Visible</th>
+          <th scope="col">Created At</th>
+          <th scope="col">#</th>
+        </tr>
+        </thead>
+        <tbody>
+
+          <tr th:each="post : ${posts}">
+            <th scope="row" th:text="${post.id}"></th>
+            <td th:text="${post.title}"></td>
+            <td th:text="${#strings.toUpperCase(post.isVisible)}"></td>
+            <td th:text="${post.createdAt}"></td>
+            <td>
+              <a
+                  class="btn btn-sm btn-info text-white"
+                  th:href="@{/posts/{slug}(slug=${post.slug})}"
+                  target="_blank"
+              >
+                <i class="fa-solid fa-globe"></i>
+              </a>
+
+              <a
+                  class="btn btn-sm btn-warning text-white"
+                  th:href="@{/user/posts/{id}(id=${post.id})}"
+                  target="_blank"
+              >
+                <i class="fa-solid fa-edit"></i>
+              </a>
+              <form
+                  id="removePost"
+                  class="d-inline"
+                  th:action="@{/user/posts/{postId}(postId=${post.id})}"
+                  th:method="delete"
+              >
+                <button type="submit" id="removeButton" class="btn btn-sm btn-danger">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div th:replace="~{fragments/pagination :: pagination (route=${route}, currentPage=${currentPage}, lastPage=${lastPage})}"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

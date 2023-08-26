@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<!-- Post preview-->
+<div class="post-preview" th:fragment="postPrev">
+  <a th:href="@{/posts/{slug}(slug=${post.slug})}">
+    <h2 class="post-title" th:text="${post.title}"></h2>
+  </a>
+  <p class="post-meta">
+    Posted by
+    <a th:text="|${post.user.firstName} ${post.user.lastName}|"></a>
+    on [[${#dates.format(post.createdAt, 'MMMM dd, yyyy')}]]
+  </p>
+</div>
+
+<!-- Divider-->
+<hr class="my-4"/>
+
+</body>
+</html>

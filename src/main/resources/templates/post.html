@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+  <title th:text="${post.title}"></title>
+</head>
+<body>
+
+<article class="mb-4" layout:fragment="content">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-10" th:utext="${post.content}"></div>
+    </div>
+  </div>
+  <div th:replace="~{fragments/comment :: comment(comments=${post.comments}, postId=${post.id})}"></div>
+</article>
+</body>
+</html>

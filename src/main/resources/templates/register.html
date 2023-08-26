@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+  <title>Login</title>
+</head>
+<body>
+
+<div class="container px-4 px-lg-5" layout:fragment="content">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-7 mb-5">
+      <form th:action="@{/register}" method="POST" th:object="${userRequestDTO}">
+
+        <div class="form-group">
+          <label for="first_name">First Name (*)</label>
+          <input
+              type="text"
+              class="form-control"
+              id="first_name"
+              required
+              th:field="*{firstName}"
+              th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+          />
+          <span
+              class="invalid-feedback"
+              th:if="${#fields.hasErrors('firstName')}"
+              th:errors="*{firstName}"
+          >
+            Invalid Data
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name (*)</label>
+          <input
+              type="text"
+              class="form-control"
+              id="last_name"
+              required
+              th:field="*{lastName}"
+              th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''"
+          />
+          <span
+              class="invalid-feedback"
+              th:if="${#fields.hasErrors('lastName')}"
+              th:errors="*{lastName}"
+          >
+            Invalid Data
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail Address (*)</label>
+          <input
+              type="email"
+              class="form-control"
+              id="email"
+              required
+              th:field="*{email}"
+              th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+          />
+          <span
+              class="invalid-feedback"
+              th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+          >
+            Invalid Data
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="password">Password (*)</label>
+          <input
+              type="password"
+              class="form-control"
+              id="password"
+              th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+              th:field="*{password}"
+              required
+          />
+          <th:block
+              th:if="${#fields.hasErrors('password')}"
+              th:each="error: ${#fields.errors('password')}"
+          >
+            <span
+                class="invalid-feedback"
+                th:each="message : ${error.split(',')}"
+                th:text="${message}"
+            >
+              Invalid Data
+            </span>
+          </th:block>
+        </div>
+        <div class="form-group">
+          <label for="confirmPass">Confirm Password (*)</label>
+          <input
+              type="password"
+              class="form-control"
+              id="confirmPass"
+              th:classappend="${#fields.hasErrors('passwordConfirm')} ? 'is-invalid' : ''"
+              th:field="*{passwordConfirm}"
+              required
+          />
+          <span
+              class="invalid-feedback"
+              th:if="${#fields.hasErrors('passwordConfirm')}"
+              th:errors="*{passwordConfirm}"
+          >
+            Invalid Data
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary py-2 px-4 mt-4">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
